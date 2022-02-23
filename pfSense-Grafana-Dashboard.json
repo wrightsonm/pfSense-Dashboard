@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 20,
-  "iteration": 1645640175687,
+  "iteration": 1645640175689,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -4134,7 +4134,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 7,
         "x": 0,
         "y": 16
       },
@@ -4184,6 +4184,106 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 7,
+        "y": 16
+      },
+      "id": 1397,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${bucket}\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"unbound\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"total_num_queries\")\r\n  |> filter(fn: (r) => r[\"host\"] == \"${Host}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> derivative(unit: 1s, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\r\n  |> keep(columns: [\"_time\",\"_field\",\"_value\"])    \r\n  |> yield()",
+          "refId": "A"
+        }
+      ],
+      "title": "Cache Query Rate",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "total_num_(.*)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -4196,8 +4296,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 7,
+        "x": 17,
         "y": 16
       },
       "id": 1330,
@@ -7139,8 +7239,8 @@
       {
         "current": {
           "selected": true,
-          "text": "pfsense.hostname.lan",
-          "value": "pfsense.hostname.lan"
+          "text": "pfsense.domain.lan",
+          "value": "pfsense.domain.lan"
         },
         "datasource": {
           "type": "influxdb",
@@ -7349,7 +7449,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -7369,6 +7469,6 @@
   "timezone": "",
   "title": "pfSense System Dashboard -Flux",
   "uid": "NQjrCYm7z",
-  "version": 33,
+  "version": 36,
   "weekStart": ""
 }
