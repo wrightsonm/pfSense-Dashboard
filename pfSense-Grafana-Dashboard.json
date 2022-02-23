@@ -7139,8 +7139,8 @@
       {
         "current": {
           "selected": true,
-          "text": "fw.anson.lan",
-          "value": "fw.anson.lan"
+          "text": "pfsense.hostname.lan",
+          "value": "pfsense.hostname.lan"
         },
         "datasource": {
           "type": "influxdb",
