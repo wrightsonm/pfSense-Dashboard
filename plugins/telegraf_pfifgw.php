@@ -124,6 +124,11 @@ foreach ($gw_array as $gw => $gateway) {
     }
     if (!isset($status)) {
         $status = "Unavailable";
+        $status_code = "2";
+    } elseif ($status == "online") {
+        $status_code = "0";
+    } elseif ($status == "down") {
+        $status_code = "1";
     }
     if (!isset($interface)) {
         $interface = "Unassigned";
@@ -155,20 +160,21 @@ foreach ($gw_array as $gw => $gateway) {
 		$substatus = "N/A";
 	}
 
-	printf(
-		"gateways,host=%s,interface=%s,gateway_name=%s monitor=\"%s\",source=\"%s\",defaultgw=%s,gwdescr=\"%s\",delay=%s,stddev=%s,loss=%s,status=\"%s\",substatus=\"%s\"\n",
-		$host,
-		$interface,
-		$name,//name is required as it is possible to have 2 gateways on 1 interface.  i.e. WAN_DHCP and WAN_DHCP6
-		$monitor,
-		$source,
-		$defaultgw,
-		$gwdescr,
-		floatval($delay),
-		floatval($stddev),
-		floatval($loss),
-		$status,
-		$substatus
-	);
+    printf(
+        "gateways,host=%s,interface=%s,gateway_name=%s monitor=\"%s\",source=\"%s\",defaultgw=%s,gwdescr=\"%s\",delay=%s,stddev=%s,loss=%s,status=\"%s\",status_code=%d,substatus=\"%s\"\n",
+        $host,
+        $interface,
+        $name, //name is required as it is possible to have 2 gateways on 1 interface.  i.e. WAN_DHCP and WAN_DHCP6
+        $monitor,
+        $source,
+        $defaultgw,
+        $gwdescr,
+        floatval($delay),
+        floatval($stddev),
+        floatval($loss),
+        $status,
+        $status_code,
+        $substatus
+    );
 };
 ?>
